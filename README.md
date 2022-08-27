@@ -14,5 +14,7 @@ Attention : this programme can only run on "Windows 10x64" or newer system and i
 ===
 注意：这个程序只能在Windows10x64或者更新的系统上运行，并且我并没有试过它是否能在Linux上运行
 ===
-    文件中有两个已经打包好的exe程序，其中有debug的是没有隐藏黑窗口的程序，正常情况下，不会有任何输出，如果有，可能是报错，请反馈在issue里
+    release中有两个已经打包好的exe程序
+    其中有debug的是没有隐藏黑窗口的程序，正常情况下，不会有任何输出
+    如果有，可能是报错，请反馈在issue里
     
