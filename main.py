@@ -13,14 +13,6 @@ import json
 from fake_useragent import UserAgent
 import pynvml
 
-'''
-一个刷新按钮
-多个复制按钮
-多个文本框
-
-一个复制按钮和一个标签组成一个对象
-'''
-
 
 root = tkinter.Tk()
 
@@ -37,33 +29,6 @@ class Base:
             tkinter.messagebox.showinfo('提示', '未生成信息，无法复制')
         else :
             tkinter.messagebox.showinfo('提示', '已复制到剪切板！')
-
-
-class cmdBlock(Base):
-    def __init__(self , name , cmd):
-        self.group = tkinter.LabelFrame(root , text = name ) #盒子
-        self.group.pack()
-
-        self.myCmd = cmd    #查询指令
-        self.text = tkinter.StringVar() #用于显示的字符串
-        self.Info = self.GetInfo()
-        self.text.set(self.Info)
-
-        self.aLabel = tkinter.Label(self.group , textvariable = self.text)    #标签内容
-        self.aLabel.pack()
-        self.aLabel.bind("<Double-Button-1>" , self.Copy)
-        
-
-    def GetInfo(self):
-        souce = os.popen(self.myCmd)    #获得原始数据
-        text = souce.read()
-        if self.myCmd == "ver":         #ver
-            aList = text.splitlines()
-            return aList[1]
-
-        elif self.myCmd == "ipconfig":
-            pass
-
 
 
 class ABlock(Base):
@@ -100,15 +65,14 @@ class ABlock(Base):
             info = socket.gethostbyname(hostname)
             return info
         elif self.name == "ip(outer)" :
-            exit_code = os.system('ping www.baidu.com > NUL')
-            if exit_code:
-                info = "No Internet connection!"
-            elif exit_code == 0 :
-                ua = UserAgent().random
-                aHeader = {'User-Agent': ua}
+            ua = UserAgent().random
+            aHeader = {'User-Agent': ua}
+            try :
                 res = requests.get("https://ip.cn/api/index?ip=&type=0" , headers = aHeader)    #通过网络获取ip
-                dic = json.loads(res.text)  #字典化
-                info = dic.get("ip")
+            except :
+                return "No Internet Connection or ip.cn is offline"
+            dic = json.loads(res.text)  #字典化
+            info = dic.get("ip")
             return info
         elif self.name == "GPU" :
             pynvml.nvmlInit() # 初始化
